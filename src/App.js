@@ -1,25 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
+import QuoteCard from "./components/QuoteCard"
+import axios from "axios";
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+  //constructor(props) {
+    //super(props);
+    state = {
+      simpsons: [],
+    }  
+  
+  getQuote = () => {
+    axios.get('https://simpsons-quotes-api.herokuapp.com/quotes')
+      .then(resp => resp.data)
+      .then(data => {
+        console.log(data)
+        this.setState({
+          simpsons: data[0],
+        })
+      });
+    }
+  render() {
+    return ( <div className = "App">
+      <QuoteCard simpson = {this.state.simpsons} /> 
+      <button type='button' onClick={this.getQuote}>click</button>
+      </div>
+    );
+  }
 }
 
 export default App;
